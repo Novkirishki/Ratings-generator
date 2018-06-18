@@ -17,7 +17,7 @@ namespace Ratings_generator
         static void Main(string[] args)
         {
             // Generate 20 random users
-            GenerateRatings(1, 20, MoviesCategory.Drama | MoviesCategory.Action | MoviesCategory.Comedy | MoviesCategory.Horror | MoviesCategory.Thriller, RatingsValue.Random, 10);
+            GenerateRatings(1, 20, MoviesCategory.Drama | MoviesCategory.Action | MoviesCategory.Comedy | MoviesCategory.Horror | MoviesCategory.Fantasy, RatingsValue.Random, 10);
         }
 
         private static void GenerateRatings(int usersStartingIndex, int numberOfUsers, MoviesCategory moviesCategory, RatingsValue ratingsValue, double percentageOfRatedMovies)
@@ -33,7 +33,7 @@ namespace Ratings_generator
                 }
             }
 
-            using (TextWriter writer = File.CreateText("ratings.csv"))
+            using (TextWriter writer = File.CreateText("../../ratings.csv"))
             {
                 var csv = new CsvWriter(writer);
                 csv.WriteRecords(records);
@@ -84,7 +84,7 @@ namespace Ratings_generator
             {
                 movieIndexes.AddRange(Enumerable.Range(61, 20));
             }
-            if ((moviesCategory & MoviesCategory.Thriller) == MoviesCategory.Thriller)
+            if ((moviesCategory & MoviesCategory.Fantasy) == MoviesCategory.Fantasy)
             {
                 movieIndexes.AddRange(Enumerable.Range(81, 20));
             }
@@ -107,7 +107,7 @@ namespace Ratings_generator
             Action = 2,
             Comedy = 4,
             Horror = 8,
-            Thriller = 16
+            Fantasy = 16
         }
     }
 
