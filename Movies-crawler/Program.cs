@@ -99,7 +99,7 @@ namespace Movies_crawler
             "I Spit on Your Grave",
             "The Conjuring",
             "Hush",
-            // sci fi movies
+            // fantasy
             "The Lord of the Rings: The Fellowship of the Ring",
             "Avatar",
             "Hugo",
