@@ -9,6 +9,7 @@ namespace Ratings_generator
     class Program
     {
         private static Random rnd = new Random();
+        private static List<Rating> records = new List<Rating>();
 
         // Sample data:
         // 1000 users
@@ -16,13 +17,38 @@ namespace Ratings_generator
         // Indexes 0-20 Drama, 21-40 Action, 41-60 Comedy, 61-80 Horror, 81-100 Thriller
         static void Main(string[] args)
         {
-            // Generate 20 random users
-            GenerateRatings(1, 20, MoviesCategory.Drama | MoviesCategory.Action | MoviesCategory.Comedy | MoviesCategory.Horror | MoviesCategory.Fantasy, RatingsValue.Random, 10);
+            // Generate 200 drama lovers
+            GenerateRatings(1, 200, MoviesCategory.Drama, RatingsValue.Positive, 60);
+            GenerateRatings(1, 200, MoviesCategory.Action | MoviesCategory.Comedy | MoviesCategory.Horror | MoviesCategory.Fantasy, RatingsValue.Random, 10);
+
+            // Generate 200 comedy lovers
+            GenerateRatings(201, 200, MoviesCategory.Comedy, RatingsValue.Positive, 60);
+            GenerateRatings(201, 200, MoviesCategory.Action | MoviesCategory.Drama | MoviesCategory.Horror | MoviesCategory.Fantasy, RatingsValue.Random, 10);
+
+            // Generate 200 horror lovers
+            GenerateRatings(401, 200, MoviesCategory.Horror, RatingsValue.Positive, 60);
+            GenerateRatings(401, 200, MoviesCategory.Action | MoviesCategory.Drama | MoviesCategory.Comedy | MoviesCategory.Fantasy, RatingsValue.Random, 10);
+
+            // Generate 200 fantasy lovers
+            GenerateRatings(601, 200, MoviesCategory.Fantasy, RatingsValue.Positive, 60);
+            GenerateRatings(601, 200, MoviesCategory.Action | MoviesCategory.Drama | MoviesCategory.Horror | MoviesCategory.Comedy, RatingsValue.Random, 10);
+
+            // Generate 200 action lovers
+            GenerateRatings(801, 200, MoviesCategory.Action, RatingsValue.Positive, 60);
+            GenerateRatings(801, 200, MoviesCategory.Comedy | MoviesCategory.Drama | MoviesCategory.Horror | MoviesCategory.Fantasy, RatingsValue.Random, 10);
+
+            // Generate 100 random users
+            GenerateRatings(1001, 100, MoviesCategory.Drama | MoviesCategory.Action | MoviesCategory.Comedy | MoviesCategory.Horror | MoviesCategory.Fantasy, RatingsValue.Random, 20);
+
+            using (TextWriter writer = File.CreateText("../../ratings.csv"))
+            {
+                var csv = new CsvWriter(writer);
+                csv.WriteRecords(records);
+            }
         }
 
         private static void GenerateRatings(int usersStartingIndex, int numberOfUsers, MoviesCategory moviesCategory, RatingsValue ratingsValue, double percentageOfRatedMovies)
         {
-            var records = new List<Rating>();
             for (int i = usersStartingIndex; i < usersStartingIndex + numberOfUsers; i++)
             {
                 var movieIndexes = GenerateMovieIndexes(moviesCategory, percentageOfRatedMovies);
@@ -31,12 +57,6 @@ namespace Ratings_generator
                     var rating = GenerateRating(ratingsValue);
                     records.Add(new Rating(i, movieIndex, rating));
                 }
-            }
-
-            using (TextWriter writer = File.CreateText("../../ratings.csv"))
-            {
-                var csv = new CsvWriter(writer);
-                csv.WriteRecords(records);
             }
         }
 
